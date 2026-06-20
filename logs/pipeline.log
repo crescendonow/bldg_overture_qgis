@@ -1,0 +1,247 @@
+2026-06-11 08:02:39,477 [WARNING] pipeline: ============================================================
+2026-06-11 08:02:39,479 [WARNING] pipeline: DRY_RUN=True — ห้าม insert ไปยัง production จริง
+2026-06-11 08:02:39,479 [WARNING] pipeline: API POST และ MongoDB insert ถูก disable ไว้
+2026-06-11 08:02:39,479 [WARNING] pipeline: ============================================================
+2026-06-11 08:02:39,479 [INFO] pipeline: Target collection : b5521040_bldg
+2026-06-11 08:02:39,480 [INFO] pipeline: Branch            : 5521040
+2026-06-11 08:02:39,480 [INFO] pipeline: Output dir        : G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data
+2026-06-11 08:02:39,481 [INFO] pipeline: AOI bbox          : {'xmin': 102.8, 'ymin': 16.42, 'xmax': 102.84, 'ymax': 16.45}
+2026-06-11 08:02:39,481 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:02:39,481 [INFO] pipeline: Step 1/5 — Download buildings from Overture Maps
+2026-06-11 08:02:39,519 [INFO] pipeline: [  0%] Downloading buildings via [duckdb] bbox=102.8000,16.4200,102.8400,16.4500
+2026-06-11 08:02:39,519 [INFO] pipeline: [ 10%] Connecting to DuckDB...
+2026-06-11 08:02:43,408 [INFO] pipeline: [ 20%] Querying S3 parquet (DuckDB)...
+2026-06-11 08:05:04,893 [WARNING] pipeline: ============================================================
+2026-06-11 08:05:04,894 [WARNING] pipeline: DRY_RUN=True — ห้าม insert ไปยัง production จริง
+2026-06-11 08:05:04,894 [WARNING] pipeline: API POST และ MongoDB insert ถูก disable ไว้
+2026-06-11 08:05:04,895 [WARNING] pipeline: ============================================================
+2026-06-11 08:05:04,895 [INFO] pipeline: Target collection : b5521040_bldg
+2026-06-11 08:05:04,896 [INFO] pipeline: Branch            : 5521040
+2026-06-11 08:05:04,896 [INFO] pipeline: Output dir        : G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data
+2026-06-11 08:05:04,896 [INFO] pipeline: AOI bbox          : {'xmin': 102.8, 'ymin': 16.42, 'xmax': 102.84, 'ymax': 16.45}
+2026-06-11 08:05:04,896 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:05:04,896 [INFO] pipeline: Step 1/5 — Download buildings from Overture Maps
+2026-06-11 08:05:04,929 [INFO] pipeline: [  0%] Downloading buildings via [duckdb] bbox=102.8000,16.4200,102.8400,16.4500
+2026-06-11 08:05:04,930 [INFO] pipeline: [ 10%] Connecting to DuckDB...
+2026-06-11 08:05:05,235 [INFO] pipeline: [ 20%] Querying S3 parquet (DuckDB)...
+2026-06-11 08:07:48,952 [WARNING] pipeline: ============================================================
+2026-06-11 08:07:48,953 [WARNING] pipeline: DRY_RUN=True — ห้าม insert ไปยัง production จริง
+2026-06-11 08:07:48,954 [WARNING] pipeline: API POST และ MongoDB insert ถูก disable ไว้
+2026-06-11 08:07:48,954 [WARNING] pipeline: ============================================================
+2026-06-11 08:07:48,954 [INFO] pipeline: Target collection : b5521040_bldg
+2026-06-11 08:07:48,954 [INFO] pipeline: Branch            : 5521040
+2026-06-11 08:07:48,955 [INFO] pipeline: Output dir        : G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data
+2026-06-11 08:07:48,956 [INFO] pipeline: AOI bbox          : {'xmin': 102.8, 'ymin': 16.42, 'xmax': 102.84, 'ymax': 16.45}
+2026-06-11 08:07:48,956 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:07:48,956 [INFO] pipeline: Step 1/5 — Download buildings from Overture Maps
+2026-06-11 08:07:48,987 [INFO] pipeline: [  0%] Downloading buildings via [duckdb] bbox=102.8000,16.4200,102.8400,16.4500
+2026-06-11 08:07:48,987 [INFO] pipeline: [ 10%] Connecting to DuckDB...
+2026-06-11 08:07:49,239 [INFO] pipeline: [ 15%] Reading parquet schema...
+2026-06-11 08:07:53,061 [INFO] pipeline: [ 20%] Querying S3 parquet (DuckDB)...
+2026-06-11 08:11:11,792 [INFO] pipeline: [ 70%] DuckDB returned 17,872 rows.
+2026-06-11 08:11:12,028 [INFO] pipeline: [100%] Downloaded 17,872 buildings.
+2026-06-11 08:11:12,029 [INFO] pipeline:   Downloaded: 17872 buildings
+2026-06-11 08:11:12,029 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:11:12,030 [INFO] pipeline: Step 2/5 — Export to .gpkg / .geojson / .shp / .tab
+2026-06-11 08:11:12,260 [INFO] bldg_extract_overture.core.exporter: Exporting 17,872 buildings → G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data
+2026-06-11 08:11:12,261 [INFO] pipeline: [  0%] Exporting 17,872 buildings → G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data
+2026-06-11 08:11:15,591 [INFO] bldg_extract_overture.core.exporter: [1/4] .gpkg → B5521040_BLDG_20260611_081112.gpkg
+2026-06-11 08:11:15,591 [INFO] pipeline: [ 25%] [1/4] .gpkg → B5521040_BLDG_20260611_081112.gpkg
+2026-06-11 08:11:22,616 [INFO] bldg_extract_overture.core.exporter: [2/4] .geojson → B5521040_BLDG_20260611_081112.geojson
+2026-06-11 08:11:22,616 [INFO] pipeline: [ 50%] [2/4] .geojson → B5521040_BLDG_20260611_081112.geojson
+2026-06-11 08:11:25,868 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:26,438 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:26,549 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:34,121 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:39,669 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:39,670 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:39,991 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:45,574 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:45,579 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:51,254 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:51,299 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:59,121 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:59,216 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:59,217 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:59,222 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:59,244 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:59,320 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:59,321 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:59,650 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:11:59,771 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:08,411 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:08,430 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:08,445 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:08,447 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:08,600 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:08,988 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:17,327 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:18,314 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:18,350 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:18,623 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:19,364 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:19,575 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:20,247 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:20,415 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:20,416 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:20,514 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:20,517 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:20,527 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:20,528 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:36,531 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:36,665 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:36,666 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:36,788 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:37,147 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:37,151 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:37,300 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:37,308 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:37,310 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:12:37,407 [INFO] bldg_extract_overture.core.exporter: [3/4] .shp → B5521040_BLDG_20260611_081112.shp
+2026-06-11 08:12:37,407 [INFO] pipeline: [ 75%] [3/4] .shp → B5521040_BLDG_20260611_081112.shp
+2026-06-11 08:12:37,425 [WARNING] fiona._env: Cannot find MapInfo charset corresponding to iconv None encoding
+2026-06-11 08:12:49,160 [INFO] bldg_extract_overture.core.exporter: [4/4] .tab → B5521040_BLDG_20260611_081112.tab
+2026-06-11 08:12:49,161 [INFO] pipeline: [100%] [4/4] .tab → B5521040_BLDG_20260611_081112.tab
+2026-06-11 08:12:49,161 [INFO] bldg_extract_overture.core.exporter: Export complete: {'gpkg': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_081112.gpkg', 'geojson': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_081112.geojson', 'shp': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_081112.shp', 'tab': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_081112.tab'}
+2026-06-11 08:12:49,163 [INFO] pipeline:   [GPKG] G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data\B5521040_BLDG_20260611_081112.gpkg
+2026-06-11 08:12:49,163 [INFO] pipeline:   [GEOJSON] G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data\B5521040_BLDG_20260611_081112.geojson
+2026-06-11 08:12:49,164 [INFO] pipeline:   [SHP] G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data\B5521040_BLDG_20260611_081112.shp
+2026-06-11 08:12:49,164 [INFO] pipeline:   [TAB] G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data\B5521040_BLDG_20260611_081112.tab
+2026-06-11 08:12:49,164 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:12:49,165 [INFO] pipeline: Step 3/5 — Topology check (topo_bldg)
+2026-06-11 08:12:49,165 [INFO] bldg_extract_overture.core.topo_runner: Starting topology check on buildings...
+2026-06-11 08:12:49,165 [INFO] pipeline: [  0%] Starting topology check on buildings...
+2026-06-11 08:12:49,920 [ERROR] pipeline:   Topology check error: Cannot import topo_bldg from G:\My Drive\application_projects\pwagis.
+Check that PWAGIS_DIR is correct in config_test.ini.
+Original error: No module named 'sip'
+2026-06-11 08:12:49,921 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:12:49,921 [INFO] pipeline: Step 4/5 — POST to pwagis API → b5521040_bldg
+2026-06-11 08:12:49,921 [INFO] bldg_extract_overture.core.api_client: [DRY RUN] Would POST 17,872 buildings to collection 'b5521040_bldg' — skipped (DRY_RUN=True).
+2026-06-11 08:12:49,922 [INFO] pipeline: [  0%] [DRY RUN] Would POST 17,872 buildings to collection 'b5521040_bldg' — skipped (DRY_RUN=True).
+2026-06-11 08:12:49,922 [WARNING] bldg_extract_overture.core.api_client: [DRY RUN] API POST skipped. Set DRY_RUN=False to enable.
+2026-06-11 08:12:49,922 [INFO] pipeline:   success=17872  failed=0  dry_run=True
+2026-06-11 08:12:49,922 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:12:49,922 [INFO] pipeline: Step 5/5 — Dump to MongoDB
+2026-06-11 08:12:49,922 [INFO] bldg_extract_overture.core.mongo_dump: [DRY RUN] Would insert 17,872 documents into pwagis_test.bldg_overture_5521040 — skipped (DRY_RUN=True).
+2026-06-11 08:12:49,922 [INFO] pipeline: [  0%] [DRY RUN] Would insert 17,872 documents into pwagis_test.bldg_overture_5521040 — skipped (DRY_RUN=True).
+2026-06-11 08:12:49,922 [WARNING] bldg_extract_overture.core.mongo_dump: [DRY RUN] MongoDB insert skipped. Set DRY_RUN=False to enable.
+2026-06-11 08:12:49,923 [INFO] pipeline:   inserted=17872  collection=bldg_overture_5521040  dry_run=True
+2026-06-11 08:12:49,923 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:12:49,923 [INFO] pipeline: Pipeline complete. Summary: {'bbox': {'xmin': 102.8, 'ymin': 16.42, 'xmax': 102.84, 'ymax': 16.45}, 'branch': '5521040', 'collection': 'b5521040_bldg', 'dry_run': True, 'download_count': 17872, 'paths': {'gpkg': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_081112.gpkg', 'geojson': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_081112.geojson', 'shp': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_081112.shp', 'tab': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_081112.tab'}, 'topo_error': "Cannot import topo_bldg from G:\\My Drive\\application_projects\\pwagis.\nCheck that PWAGIS_DIR is correct in config_test.ini.\nOriginal error: No module named 'sip'", 'api_result': {'success': 17872, 'failed': 0, 'errors': [], 'dry_run': True}, 'mongo_result': {'inserted': 17872, 'collection': 'bldg_overture_5521040', 'dry_run': True}}
+2026-06-11 08:31:21,851 [WARNING] pipeline: ============================================================
+2026-06-11 08:31:21,854 [WARNING] pipeline: DRY_RUN=True — ห้าม insert ไปยัง production จริง
+2026-06-11 08:31:21,855 [WARNING] pipeline: API POST และ MongoDB insert ถูก disable ไว้
+2026-06-11 08:31:21,855 [WARNING] pipeline: ============================================================
+2026-06-11 08:31:21,855 [INFO] pipeline: Target collection : b5521040_bldg
+2026-06-11 08:31:21,856 [INFO] pipeline: Branch            : 5521040
+2026-06-11 08:31:21,856 [INFO] pipeline: Output dir        : G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data
+2026-06-11 08:31:21,857 [INFO] pipeline: AOI bbox          : {'xmin': 102.8, 'ymin': 16.42, 'xmax': 102.84, 'ymax': 16.45}
+2026-06-11 08:31:21,857 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:31:21,857 [INFO] pipeline: Step 1/5 — Download buildings from Overture Maps
+2026-06-11 08:31:22,038 [INFO] pipeline: [  0%] Downloading buildings via [duckdb] bbox=102.8000,16.4200,102.8400,16.4500
+2026-06-11 08:31:22,039 [INFO] pipeline: [ 10%] Connecting to DuckDB...
+2026-06-11 08:31:25,202 [INFO] pipeline: [ 15%] Reading parquet schema...
+2026-06-11 08:31:32,640 [INFO] pipeline: [ 20%] Querying S3 parquet (DuckDB)...
+2026-06-11 08:34:45,108 [INFO] pipeline: [ 70%] DuckDB returned 17,872 rows.
+2026-06-11 08:34:45,472 [INFO] pipeline: [100%] Downloaded 17,872 buildings.
+2026-06-11 08:34:45,473 [INFO] pipeline:   Downloaded: 17872 buildings
+2026-06-11 08:34:45,473 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:34:45,475 [INFO] pipeline: Step 2/5 — Export to .gpkg / .geojson / .shp / .tab
+2026-06-11 08:34:45,941 [INFO] bldg_extract_overture.core.exporter: Exporting 17,872 buildings → G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data
+2026-06-11 08:34:45,942 [INFO] pipeline: [  0%] Exporting 17,872 buildings → G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data
+2026-06-11 08:34:52,373 [INFO] bldg_extract_overture.core.exporter: [1/4] .gpkg → B5521040_BLDG_20260611_083445.gpkg
+2026-06-11 08:34:52,373 [INFO] pipeline: [ 25%] [1/4] .gpkg → B5521040_BLDG_20260611_083445.gpkg
+2026-06-11 08:35:10,204 [INFO] bldg_extract_overture.core.exporter: [2/4] .geojson → B5521040_BLDG_20260611_083445.geojson
+2026-06-11 08:35:10,205 [INFO] pipeline: [ 50%] [2/4] .geojson → B5521040_BLDG_20260611_083445.geojson
+2026-06-11 08:35:14,620 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:35:15,405 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:35:15,530 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:35:24,632 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:35:34,102 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:35:34,106 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:35:35,505 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:35:48,462 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:35:48,471 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:35:59,777 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:35:59,915 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:11,145 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:11,272 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:11,275 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:11,282 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:11,315 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:11,434 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:11,436 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:11,940 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:12,118 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:24,393 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:24,423 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:24,455 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:24,458 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:24,739 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:25,344 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:41,319 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:42,744 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:42,795 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:43,170 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:44,455 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:44,792 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:45,871 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:46,151 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:46,152 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:46,312 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:46,315 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:46,329 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:36:46,332 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:37:19,069 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:37:19,291 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:37:19,292 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:37:19,507 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:37:20,110 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:37:20,117 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:37:20,345 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:37:20,361 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:37:20,365 [WARNING] fiona._env: One or several characters couldn't be converted correctly from UTF-8 to ISO-8859-1.  This warning will not be emitted anymore.
+2026-06-11 08:37:20,536 [INFO] bldg_extract_overture.core.exporter: [3/4] .shp → B5521040_BLDG_20260611_083445.shp
+2026-06-11 08:37:20,537 [INFO] pipeline: [ 75%] [3/4] .shp → B5521040_BLDG_20260611_083445.shp
+2026-06-11 08:37:20,562 [WARNING] fiona._env: Cannot find MapInfo charset corresponding to iconv None encoding
+2026-06-11 08:37:42,818 [INFO] bldg_extract_overture.core.exporter: [4/4] .tab → B5521040_BLDG_20260611_083445.tab
+2026-06-11 08:37:42,818 [INFO] pipeline: [100%] [4/4] .tab → B5521040_BLDG_20260611_083445.tab
+2026-06-11 08:37:42,819 [INFO] bldg_extract_overture.core.exporter: Export complete: {'gpkg': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_083445.gpkg', 'geojson': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_083445.geojson', 'shp': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_083445.shp', 'tab': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_083445.tab'}
+2026-06-11 08:37:42,824 [INFO] pipeline:   [GPKG] G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data\B5521040_BLDG_20260611_083445.gpkg
+2026-06-11 08:37:42,824 [INFO] pipeline:   [GEOJSON] G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data\B5521040_BLDG_20260611_083445.geojson
+2026-06-11 08:37:42,825 [INFO] pipeline:   [SHP] G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data\B5521040_BLDG_20260611_083445.shp
+2026-06-11 08:37:42,825 [INFO] pipeline:   [TAB] G:\My Drive\application_projects\pwagisdata_custom\bldg_extract_qgisV202601\bldg_extract_overture\Data\B5521040_BLDG_20260611_083445.tab
+2026-06-11 08:37:42,825 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:37:42,826 [INFO] pipeline: Step 3/5 — Topology check (topo_bldg)
+2026-06-11 08:37:42,826 [INFO] bldg_extract_overture.core.topo_runner: Starting topology check on buildings...
+2026-06-11 08:37:42,826 [INFO] pipeline: [  0%] Starting topology check on buildings...
+2026-06-11 08:37:42,841 [INFO] bldg_extract_overture.core.topo_runner: topology module loaded.
+2026-06-11 08:37:42,841 [INFO] pipeline: [ 10%] topology module loaded.
+2026-06-11 08:37:42,865 [INFO] bldg_extract_overture.core.topo_runner: Running topo_bldg (mode="1", 17,872 features)...
+2026-06-11 08:37:42,866 [INFO] pipeline: [ 20%] Running topo_bldg (mode="1", 17,872 features)...
+2026-06-11 08:37:42,871 [INFO] root: Read file use gdf [START]
+2026-06-11 08:37:45,619 [INFO] root: Read file use gdf [START]
+2026-06-11 08:37:47,840 [INFO] bldg_extract_overture.core.topo_runner: Topology check complete.
+2026-06-11 08:37:47,840 [INFO] pipeline: [ 90%] Topology check complete.
+2026-06-11 08:37:47,872 [WARNING] bldg_extract_overture.core.topo_runner: Topology issues found:
+  topo_polygon_overlap: 1943 error(s)
+2026-06-11 08:37:47,873 [INFO] bldg_extract_overture.core.topo_runner: Topology issues found:
+  topo_polygon_overlap: 1943 error(s)
+2026-06-11 08:37:47,873 [INFO] pipeline: [100%] Topology issues found:
+  topo_polygon_overlap: 1943 error(s)
+2026-06-11 08:37:47,918 [INFO] pipeline:   Topology summary: {'topo_area': 0, 'topo_multipolygon': 0, 'topo_polygon_invalid': 0, 'topo_polygon_duplicates': 0, 'topo_pologon_outregion': 0, 'topo_polygon_overlap': 1943, 'topo_polygon_selfintersect': 0}
+2026-06-11 08:37:47,918 [WARNING] pipeline:   ⚠ Critical topology errors found.
+2026-06-11 08:37:49,048 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:37:49,048 [INFO] pipeline: Step 4/5 — POST to pwagis API → b5521040_bldg
+2026-06-11 08:37:49,049 [INFO] bldg_extract_overture.core.api_client: [DRY RUN] Would POST 17,872 buildings to collection 'b5521040_bldg' — skipped (DRY_RUN=True).
+2026-06-11 08:37:49,049 [INFO] pipeline: [  0%] [DRY RUN] Would POST 17,872 buildings to collection 'b5521040_bldg' — skipped (DRY_RUN=True).
+2026-06-11 08:37:49,049 [WARNING] bldg_extract_overture.core.api_client: [DRY RUN] API POST skipped. Set DRY_RUN=False to enable.
+2026-06-11 08:37:49,049 [INFO] pipeline:   success=17872  failed=0  dry_run=True
+2026-06-11 08:37:49,051 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:37:49,051 [INFO] pipeline: Step 5/5 — Dump to MongoDB
+2026-06-11 08:37:49,051 [INFO] bldg_extract_overture.core.mongo_dump: [DRY RUN] Would insert 17,872 documents into pwagis_test.bldg_overture_5521040 — skipped (DRY_RUN=True).
+2026-06-11 08:37:49,051 [INFO] pipeline: [  0%] [DRY RUN] Would insert 17,872 documents into pwagis_test.bldg_overture_5521040 — skipped (DRY_RUN=True).
+2026-06-11 08:37:49,052 [WARNING] bldg_extract_overture.core.mongo_dump: [DRY RUN] MongoDB insert skipped. Set DRY_RUN=False to enable.
+2026-06-11 08:37:49,052 [INFO] pipeline:   inserted=17872  collection=bldg_overture_5521040  dry_run=True
+2026-06-11 08:37:49,053 [INFO] pipeline: ──────────────────────────────────────────────────
+2026-06-11 08:37:49,053 [INFO] pipeline: Pipeline complete. Summary: {'bbox': {'xmin': 102.8, 'ymin': 16.42, 'xmax': 102.84, 'ymax': 16.45}, 'branch': '5521040', 'collection': 'b5521040_bldg', 'dry_run': True, 'download_count': 17872, 'paths': {'gpkg': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_083445.gpkg', 'geojson': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_083445.geojson', 'shp': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_083445.shp', 'tab': 'G:\\My Drive\\application_projects\\pwagisdata_custom\\bldg_extract_qgisV202601\\bldg_extract_overture\\Data\\B5521040_BLDG_20260611_083445.tab'}, 'topo_summary': {'topo_area': 0, 'topo_multipolygon': 0, 'topo_polygon_invalid': 0, 'topo_polygon_duplicates': 0, 'topo_pologon_outregion': 0, 'topo_polygon_overlap': 1943, 'topo_polygon_selfintersect': 0}, 'topo_critical': True, 'api_result': {'success': 17872, 'failed': 0, 'errors': [], 'dry_run': True}, 'mongo_result': {'inserted': 17872, 'collection': 'bldg_overture_5521040', 'dry_run': True}}

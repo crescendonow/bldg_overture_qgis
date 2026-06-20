@@ -1,0 +1,16 @@
+[general]
+name=Building Footprint Extractor (Overture Maps)
+qgisMinimumVersion=3.28
+description=Extract building footprints from Overture Maps and push through pwagis API pipeline
+version=0.1.0
+author=PWA GIS Team
+email=manowwon@gmail.com
+about=Downloads building polygons from Overture Maps Foundation (AWS S3), exports as GeoPackage / GeoJSON / Shapefile / TAB, runs topology checks, and dumps to MongoDB via the pwagis REST API.
+tracker=
+repository=
+tags=buildings,overture,extraction,geopackage,mongodb
+homepage=
+category=Vector
+icon=icon.png
+experimental=True
+deprecated=False

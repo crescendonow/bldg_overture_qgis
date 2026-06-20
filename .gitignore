@@ -1,0 +1,11 @@
+# real config with credentials — never commit
+config.ini
+
+# build artifacts
+*.exe
+/server
+/seed
+bin/
+nginx.conf 
+Data/
+config.py 
