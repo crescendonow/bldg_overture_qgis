@@ -109,18 +109,52 @@ _DESIRED_COLUMNS = [
     "level", "names", "sources", "confidence",
 ]
 
+# Reused across downloads within a QGIS session so the fixed setup cost
+# (extension INSTALL/LOAD + parquet footer/metadata fetch) is paid only once.
+_CON = None                 # persistent DuckDB connection
+_SCHEMA_CACHE: dict = {}    # OVERTURE_RELEASE → {col_name: type}
 
-def _download_via_duckdb(bbox, output_path, progress_cb) -> gpd.GeoDataFrame:
-    """Use DuckDB spatial + httpfs to query Overture S3 parquet directly."""
+
+def _get_con():
+    """
+    Lazily create and cache one configured DuckDB connection for the session.
+
+    Reusing the connection skips repeat extension INSTALL/LOAD, and the enabled
+    httpfs metadata/object caches let the data query reuse the parquet footers the
+    schema probe already fetched — this is the bulk of the previous ~2-min overhead.
+    """
+    global _CON
+    if _CON is not None:
+        return _CON
     try:
         import duckdb
     except ImportError:
         raise ImportError("Install duckdb: pip install duckdb")
 
-    _log(progress_cb, 10, "Connecting to DuckDB...")
     con = duckdb.connect()
     con.execute("INSTALL spatial; LOAD spatial;")
     con.execute("INSTALL httpfs;  LOAD httpfs;")
+    # Overture's public bucket is in us-west-2. Pin the region (avoids a redirect)
+    # and turn on the HTTP-metadata + object caches so footers fetched once are
+    # reused by later queries in this session. Settings vary by DuckDB version, so
+    # apply them defensively.
+    for stmt in (
+        "SET s3_region='us-west-2';",
+        "SET enable_http_metadata_cache=true;",
+        "SET enable_object_cache=true;",
+    ):
+        try:
+            con.execute(stmt)
+        except Exception:
+            pass
+    _CON = con
+    return con
+
+
+def _download_via_duckdb(bbox, output_path, progress_cb) -> gpd.GeoDataFrame:
+    """Use DuckDB spatial + httpfs to query Overture S3 parquet directly."""
+    _log(progress_cb, 10, "Connecting to DuckDB...")
+    con = _get_con()
 
     from ..config import OVERTURE_RELEASE
     s3_path = (
@@ -130,11 +164,15 @@ def _download_via_duckdb(bbox, output_path, progress_cb) -> gpd.GeoDataFrame:
 
     # ตรวจ schema จริงของ release ก่อน — คอลัมน์และชนิด geometry ต่างกันได้
     # (duckdb ≥1.4 อ่าน GeoParquet เป็น GEOMETRY native; รุ่นเก่าเห็นเป็น WKB BLOB)
-    _log(progress_cb, 15, "Reading parquet schema...")
-    schema = con.execute(
-        f"DESCRIBE SELECT * FROM read_parquet('{s3_path}', hive_partitioning = 1)"
-    ).fetchall()
-    available = {row[0]: row[1] for row in schema}
+    # cache ต่อ release: DESCRIBE บังคับ list ไฟล์ S3 ทั้ง theme — รันครั้งเดียวพอ
+    available = _SCHEMA_CACHE.get(OVERTURE_RELEASE)
+    if available is None:
+        _log(progress_cb, 15, "Reading parquet schema...")
+        schema = con.execute(
+            f"DESCRIBE SELECT * FROM read_parquet('{s3_path}', hive_partitioning = 1)"
+        ).fetchall()
+        available = {row[0]: row[1] for row in schema}
+        _SCHEMA_CACHE[OVERTURE_RELEASE] = available
 
     cols = [c for c in _DESIRED_COLUMNS if c in available]
     if available.get("geometry", "").upper() == "GEOMETRY":
@@ -142,7 +180,10 @@ def _download_via_duckdb(bbox, output_path, progress_cb) -> gpd.GeoDataFrame:
     else:
         geom_expr = "geometry"
 
-    _log(progress_cb, 20, "Querying S3 parquet (DuckDB)...")
+    # Busy sentinel (pct<0): the next call blocks on the S3 scan with no measurable
+    # progress, so let the UI animate + show elapsed time instead of freezing.
+    _log(progress_cb, -1,
+         "Querying S3 parquet (DuckDB) — this can take a few minutes on first run…")
     sql = f"""
         SELECT
             {', '.join(cols)},
@@ -155,7 +196,7 @@ def _download_via_duckdb(bbox, output_path, progress_cb) -> gpd.GeoDataFrame:
     """
     df = con.execute(sql).df()
     _log(progress_cb, 70, f"DuckDB returned {len(df):,} rows.")
-    con.close()
+    # NOTE: keep the connection open (cached in _CON) for the next download.
 
     if df.empty:
         return gpd.GeoDataFrame()

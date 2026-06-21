@@ -20,7 +20,7 @@ from qgis.PyQt.QtWidgets import (
     QCheckBox, QFileDialog, QMessageBox,
 )
 from qgis.PyQt.QtCore import Qt, QThread, pyqtSignal, QObject
-from qgis.core import QgsTask, QgsApplication
+from qgis.core import QgsTask, QgsApplication, QgsProject, QgsVectorLayer
 
 from .config import (
     DRY_RUN, DEFAULT_BRANCH, collection_for_branch, DATA_DIR, INSERT_API_BASE_URL,
@@ -30,12 +30,13 @@ from .core.exporter import export_buildings, prepare_for_export
 from .core.api_client import post_buildings
 from .core.topo_runner import run_topo_bldg, summarise_topo_results
 from .core.mongo_dump import dump_buildings
-from .core.insert_api_client import post_features
+from .core.insert_api_client import post_features, SOURCE_EXTRACT, SOURCE_UPLOAD
 from .core.layer_loader import load_gpkg_layer
 from .core.aoi_tools import (
-    RectangleAOITool, make_rubber_band,
+    RectangleAOITool, FreePolygonAOITool, make_rubber_band,
     get_layer_extent_bbox, get_selected_features_bbox,
 )
+from .core.pwacode_finder import is_meter_layer_name, match_pwacode_field, extract_pwacode
 from .progress_dialog import ProgressDialog
 
 
@@ -49,6 +50,7 @@ class BldgExtractDialog(QDialog):
         self._task    = None
         self._build_ui()
         self._update_dry_run_label()
+        self._autofill_pwacode()  # อ่าน pwaCode จาก layer 'meter' ถ้ามี
 
     # ── UI construction ────────────────────────────────────────────────────────
 
@@ -79,11 +81,17 @@ class BldgExtractDialog(QDialog):
         aoi_lay = QVBoxLayout(grp_aoi)
 
         self.radDraw    = QRadioButton("Draw rectangle on map")
+        self.radPolygon = QRadioButton("Draw polygon (click vertices)")
         self.radLayer   = QRadioButton("Use active layer extent")
         self.radSelected = QRadioButton("Use selected features extent")
         self.radManual  = QRadioButton("Enter bbox manually")
         self.radDraw.setChecked(True)
-        for rb in (self.radDraw, self.radLayer, self.radSelected, self.radManual):
+        self.radPolygon.setToolTip(
+            "คลิกทีละจุดเพื่อวาด polygon, คลิกขวา/ดับเบิลคลิกเพื่อจบ — "
+            "ใช้ bounding box ของ polygon เป็น AOI"
+        )
+        for rb in (self.radDraw, self.radPolygon, self.radLayer,
+                   self.radSelected, self.radManual):
             aoi_lay.addWidget(rb)
 
         bbox_row = QHBoxLayout()
@@ -124,6 +132,12 @@ class BldgExtractDialog(QDialog):
         self.txtBranch = QLineEdit(DEFAULT_BRANCH)
         self.txtBranch.textChanged.connect(self._on_branch_changed)
         branch_row.addWidget(self.txtBranch)
+        self.btnAutoBranch = QPushButton("Auto-detect")
+        self.btnAutoBranch.setToolTip(
+            "อ่าน pwaCode จาก layer ที่ชื่อมีคำว่า 'meter' (column pwa_code/pwacode/pwaCode)"
+        )
+        self.btnAutoBranch.clicked.connect(lambda: self._autofill_pwacode(verbose=True))
+        branch_row.addWidget(self.btnAutoBranch)
         out_lay.addLayout(branch_row)
 
         self.chkLoadLayer = QCheckBox("Auto-load .gpkg into QGIS after extract")
@@ -218,6 +232,48 @@ class BldgExtractDialog(QDialog):
             f"Target collection: <b>{collection_for_branch(text)}</b>"
         )
 
+    def _autofill_pwacode(self, verbose: bool = False):
+        """
+        Scan loaded layers for one named like '*meter*' and read pwaCode from a
+        pwa_code/pwacode/pwaCode column (first feature). Fills the Branch code
+        field but leaves it editable so the operator can override.
+        """
+        try:
+            found = self._scan_meter_layers()
+        except Exception as exc:  # pragma: no cover - defensive against odd layers
+            if verbose:
+                self._log(f"Auto-detect pwaCode failed: {exc}")
+            return
+        if found:
+            code, layer_name, field = found
+            self.txtBranch.setText(code)  # field stays editable
+            self._log(f"Auto-detected pwaCode={code} from layer '{layer_name}' "
+                      f"(column '{field}').")
+        elif verbose:
+            self._log("Auto-detect: no 'meter' layer with a pwa_code column was found.")
+
+    def _scan_meter_layers(self):
+        """
+        Walk QgsProject vector layers, return (pwacode, layer_name, field) for the
+        first '*meter*' layer whose pwa_code column yields a value, else None.
+        """
+        for layer in QgsProject.instance().mapLayers().values():
+            if not isinstance(layer, QgsVectorLayer):
+                continue
+            name = layer.name()
+            if not is_meter_layer_name(name):
+                continue
+            field = match_pwacode_field([f.name() for f in layer.fields()])
+            if not field:
+                continue
+            feat = next(layer.getFeatures(), None)
+            if feat is None:
+                continue
+            code = extract_pwacode(feat[field])
+            if code:
+                return (code, name, field)
+        return None
+
     # ── AOI ────────────────────────────────────────────────────────────────────
 
     def _on_set_aoi(self):
@@ -225,6 +281,8 @@ class BldgExtractDialog(QDialog):
             self._parse_manual_bbox()
         elif self.radDraw.isChecked():
             self._start_draw_tool()
+        elif self.radPolygon.isChecked():
+            self._start_polygon_tool()
         elif self.radLayer.isChecked():
             lyr = self.iface.activeLayer()
             if lyr:
@@ -266,6 +324,16 @@ class BldgExtractDialog(QDialog):
         self._log("Draw a rectangle on the map to set AOI…")
         self.hide()
 
+    def _start_polygon_tool(self):
+        canvas = self.iface.mapCanvas()
+        if self._rubber_band is None:
+            self._rubber_band = make_rubber_band(canvas)
+        self._aoi_tool = FreePolygonAOITool(canvas, self._rubber_band)
+        self._aoi_tool.aoi_selected.connect(self._on_aoi_drawn)
+        canvas.setMapTool(self._aoi_tool)
+        self._log("Click vertices to draw a polygon; right-click / double-click to finish…")
+        self.hide()
+
     def _on_aoi_drawn(self, bbox: dict):
         self._bbox = bbox
         self._show_bbox()
@@ -298,12 +366,48 @@ class BldgExtractDialog(QDialog):
         if path:
             self.txtUploadFile.setText(path)
 
+    def _confirm_commit(self, branch: str, what: str) -> bool:
+        """Confirm a real (non-dry-run) write to production, surfacing the target
+        collection alias so a mistyped Branch code is caught *before* hundreds of
+        inserts fail (or worse, hit the wrong collection). In DRY_RUN there is no
+        write, so it auto-proceeds. Returns True to continue."""
+        if DRY_RUN:
+            return True
+        alias = collection_for_branch(branch)
+        reply = QMessageBox.question(
+            self, "ยืนยัน commit เข้า production",
+            f"{what}เข้า production MongoDB จริง\n\n"
+            f"Branch code: {branch}\n"
+            f"Collection (alias): {alias}\n"
+            f"API: {INSERT_API_BASE_URL}\n\n"
+            "โปรดตรวจสอบ Branch code ให้ถูกต้องก่อน — หากพิมพ์ผิด ข้อมูลจะ\n"
+            "insert ไม่สำเร็จทั้งหมด (alias not registered)\n\nดำเนินการต่อหรือไม่?",
+            QMessageBox.Yes | QMessageBox.No, QMessageBox.No,
+        )
+        return reply == QMessageBox.Yes
+
+    def _alias_hint(self, summary: dict) -> str:
+        """If the upload failed because the alias is not registered, return a
+        friendly Thai hint pointing at a likely Branch-code typo (else '')."""
+        errs = summary.get("errors") or []
+        if any("not registered" in str(e) for e in errs):
+            alias = collection_for_branch(getattr(self, "_last_branch", "") or "")
+            return ("\n\n⚠ ไม่พบ collection (alias) ปลายทาง: "
+                    f"{alias}\n"
+                    "กรุณาตรวจสอบ Branch code (pwaCode) ให้ถูกต้อง — ค่าที่กรอกอาจพิมพ์ผิด")
+        return ""
+
     def _on_upload(self):
         path = self.txtUploadFile.text().strip()
         if not path or not os.path.exists(path):
             QMessageBox.warning(self, "No file", "Please choose a valid file to upload.")
             return
         branch = self.txtBranch.text().strip() or DEFAULT_BRANCH
+
+        if not self._confirm_commit(branch, "จะอัปโหลดไฟล์นี้"):
+            self._log("Upload ยกเลิก (ไม่ยืนยัน commit เข้า production).")
+            return
+        self._last_branch = branch
 
         self.btnUpload.setEnabled(False)
         self._progress = ProgressDialog(self)
@@ -325,7 +429,8 @@ class BldgExtractDialog(QDialog):
             self, "Upload done",
             "Upload finished.\n"
             f"dry_run={summary.get('dry_run')}  inserted={summary.get('inserted')}\n"
-            f"success={summary.get('success')}  failed={summary.get('failed')}",
+            f"success={summary.get('success')}  failed={summary.get('failed')}"
+            + self._alias_hint(summary),
         )
 
     def _on_extract(self):
@@ -342,17 +447,12 @@ class BldgExtractDialog(QDialog):
         load_lyr  = self.chkLoadLayer.isChecked()
 
         # Confirm before committing to production (LIVE config + upload step enabled).
-        # DRY_RUN=True is a safe preview, so no prompt in that case.
-        if run_upload and not DRY_RUN:
-            reply = QMessageBox.question(
-                self, "ยืนยัน commit เข้า production",
-                "หลัง extract จะอัปโหลดอาคารที่ดึงมาเข้า production MongoDB จริง\n"
-                f"(API: {INSERT_API_BASE_URL})\n\nดำเนินการต่อหรือไม่?",
-                QMessageBox.Yes | QMessageBox.No, QMessageBox.No,
-            )
-            if reply != QMessageBox.Yes:
-                self._log("Extract ยกเลิก (ไม่ยืนยัน commit เข้า production).")
-                return
+        # The confirm surfaces the target alias so a mistyped Branch code is caught;
+        # DRY_RUN=True is a safe preview, so _confirm_commit auto-proceeds there.
+        if run_upload and not self._confirm_commit(branch, "หลัง extract จะอัปโหลดอาคารที่ดึงมา"):
+            self._log("Extract ยกเลิก (ไม่ยืนยัน commit เข้า production).")
+            return
+        self._last_branch = branch
 
         self.btnExtract.setEnabled(False)
         self._progress = ProgressDialog(self)
@@ -384,7 +484,13 @@ class BldgExtractDialog(QDialog):
         self._log(msg)
 
     def _on_task_progress(self, pct: int, msg: str):
-        self._progress.set_progress(pct)
+        # pct < 0 is a sentinel for a long blocking phase with no measurable
+        # progress (e.g. the DuckDB→S3 query): switch the bar to a busy/marquee
+        # animation so the dialog clearly stays alive instead of freezing at 20%.
+        if pct < 0:
+            self._progress.set_busy(True)
+        else:
+            self._progress.set_progress(pct)
         self._progress.set_status(msg)
         self._log(msg)
 
@@ -401,6 +507,7 @@ class BldgExtractDialog(QDialog):
             msg += ("\n\nUpload to Insert API:\n"
                     f"  inserted={up.get('inserted')}  dry_run={up.get('dry_run')}\n"
                     f"  success={up.get('success')}  failed={up.get('failed')}")
+            msg += self._alias_hint(up)
         QMessageBox.information(self, "Done", msg)
 
     def _on_task_error(self, msg: str):
@@ -459,9 +566,10 @@ class _ExtractionTask(QThread):
             return
         self.log_message.emit(f"  → {len(gdf):,} buildings downloaded.")
 
-        # Step 2: Export
+        # Step 2: Export — busy sentinel: writing 4 formats is a single blocking
+        # phase, so animate the bar instead of pinning it at 20%.
         self.log_message.emit("Step 2/6 — Exporting to .gpkg / .geojson / .shp / .tab…")
-        cb(20, "Exporting formats…")
+        cb(-1, "Exporting formats (gpkg / geojson / shp / tab)…")
         paths = export_buildings(gdf, self._branch, self._out_dir, progress_cb=cb)
         if self._cancelled:
             return
@@ -539,7 +647,8 @@ class _ExtractionTask(QThread):
             up_gdf = prepare_for_export(gdf)
             fc = json.loads(up_gdf.to_json())
             summary = post_features(fc, pwacode=self._branch,
-                                    dry_run_override=DRY_RUN, progress_cb=cb)
+                                    dry_run_override=DRY_RUN, source=SOURCE_EXTRACT,
+                                    progress_cb=cb)
             paths["upload"] = summary
             self.log_message.emit(
                 f"  → Insert API: inserted={summary.get('inserted')}  "
@@ -613,6 +722,7 @@ class _UploadTask(QThread):
         n = len(fc.get("features", []))
         self.log_message.emit(f"Uploading {n:,} features to insert API…")
         summary = post_features(fc, pwacode=self._pwacode,
-                                dry_run_override=DRY_RUN, progress_cb=cb)
+                                dry_run_override=DRY_RUN, source=SOURCE_UPLOAD,
+                                progress_cb=cb)
         cb(100, "Done.")
         self.finished_ok.emit(summary)

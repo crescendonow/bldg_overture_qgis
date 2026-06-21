@@ -15,12 +15,16 @@ from typing import Optional
 
 import requests
 
-from ..config import INSERT_API_BASE_URL
+from ..config import INSERT_API_BASE_URL, INSERT_API_KEY
 
 logger = logging.getLogger(__name__)
 
 # ส่งทีละชุดเพื่อกัน payload ใหญ่เกินไป
 CHUNK_SIZE = 500
+
+# ค่า remark (source) สำหรับติดตามที่มาของข้อมูล เผื่อต้อง delete ทีหลัง
+SOURCE_EXTRACT = "bldg_extract_overture"  # ดึงจาก Overture แล้ว insert
+SOURCE_UPLOAD = "bldg_insert_api"         # upload จากไฟล์ที่ user นำเข้าเอง
 
 
 def post_features(
@@ -29,6 +33,8 @@ def post_features(
     base_url: str = INSERT_API_BASE_URL,
     dry_run_override: Optional[bool] = None,
     fix: bool = False,
+    source: str = "",
+    api_key: str = INSERT_API_KEY,
     timeout: int = 120,
     progress_cb=None,
 ) -> dict:
@@ -41,6 +47,9 @@ def post_features(
         base_url:           Go API base URL
         dry_run_override:   None = ใช้ค่า server; True/False = บังคับผ่าน ?dryRun=
         fix:                ?fix=true → ให้ server เรียก ST_MakeValid
+        source:             ?source=… → server ตั้ง properties.remark เป็นค่านี้
+                            (SOURCE_EXTRACT / SOURCE_UPLOAD) เพื่อ trace ที่มา
+        api_key:            ค่า X-API-Key header (ว่าง = ไม่แนบ; server อาจปฏิเสธ 401)
         progress_cb:        callable(pct:int, msg:str) or None
 
     Returns:
@@ -57,6 +66,7 @@ def post_features(
 
     base = base_url.rstrip("/")
     url = f"{base}/buildings"
+    headers = {"X-API-Key": api_key} if api_key else {}
 
     for start in range(0, total, CHUNK_SIZE):
         chunk = feats[start:start + CHUNK_SIZE]
@@ -65,10 +75,13 @@ def post_features(
             params["dryRun"] = "true" if dry_run_override else "false"
         if fix:
             params["fix"] = "true"
+        if source:
+            params["source"] = source
         payload = {"type": "FeatureCollection", "features": chunk}
 
         try:
-            resp = requests.post(url, params=params, json=payload, timeout=timeout)
+            resp = requests.post(url, params=params, json=payload,
+                                 headers=headers, timeout=timeout)
         except requests.RequestException as exc:
             summary["failed"] += len(chunk)
             summary["errors"].append(str(exc))
